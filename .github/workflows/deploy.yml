@@ -1,66 +1,62 @@
-# Archivo: .github/workflows/deploy.yml
+# .github/workflows/deploy.yml
 
 name: Despliegue Automático
 
-# Define qué evento activa este flujo de trabajo
+# ------------------------------
+# 1. PERMISOS
+# Se requiere permiso de 'contents: write' para que la acción de despliegue
+# pueda crear la rama gh-pages o subir archivos a la rama principal.
+# ------------------------------
+permissions:
+  contents: write
+
+# ------------------------------
+# 2. DISPARADOR (TRIGGER)
+# Define que este flujo de trabajo se ejecuta cada vez que hay un push
+# a la rama 'main' (o la rama principal de tu proyecto).
+# ------------------------------
 on:
   push:
-    # Se activa SÓLO cuando se hace push a la rama 'main' (o 'master')
     branches:
       - main 
 
-# Define los trabajos (jobs) que se ejecutarán
+# ------------------------------
+# 3. TRABAJOS (JOBS)
+# El trabajo que se encarga del despliegue.
+# ------------------------------
 jobs:
-  build-and-deploy:
-    # El sistema operativo donde se ejecutará
+  deploy:
     runs-on: ubuntu-latest
     
-    # Pasos (steps) a ejecutar
     steps:
-      # Paso 1: Descarga tu código
+      # Paso A: Descarga tu código
       - name: Checkout del repositorio
         uses: actions/checkout@v4
       
       # ----------------------------------------------------------------
-      # Paso 2: INSTALACIÓN Y CONSTRUCCIÓN (ADAPTA ESTO A TU PROYECTO)
+      # Paso B (OPCIONAL): Construcción del proyecto
+      # DESCOMENTA esta sección si tu proyecto necesita ser compilado (ej. React, Vue).
+      # Si es solo HTML/CSS/JS puro, déjala COMENTADA.
       # ----------------------------------------------------------------
-      
-      # Ejemplo para un proyecto Node.js/Web (React, Vue, etc.)
-      # - name: Configurar Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
-      # - name: Instalar dependencias
-      #   run: npm install
-      # - name: Construir proyecto
-      #   run: npm run build
-      
-      # Ejemplo para un proyecto Python:
-      # - name: Configurar Python
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: '3.10'
-      # - name: Instalar dependencias
-      #   run: pip install -r requirements.txt
-
+      #- name: Configurar Node.js (Si usas JS avanzado/frameworks)
+      #  uses: actions/setup-node@v4
+      #  with:
+      #    node-version: '20' # O la versión que uses
+      #- name: Instalar dependencias
+      #  run: npm install
+      #- name: Construir proyecto
+      #  run: npm run build
+        
       # ----------------------------------------------------------------
-      # Paso 3: DESPLIEGUE (ESTO DEPENDE DE TU SERVIDOR FINAL)
+      # Paso C: Despliegue a GitHub Pages
       # ----------------------------------------------------------------
-
-      # Ejemplo de despliegue a GitHub Pages (muy común para webs estáticas)
       - name: Desplegar a GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # Cambia 'public' por la carpeta que contenga tus archivos finales ('build', 'dist', etc.)
-          publish_dir: ./public
-          
-      # Opcional: Ejemplo de despliegue a un servidor externo vía SFTP/FTP
-      # - name: Deploy via SFTP
-      #   uses: wlixcc/SFTP-Action@v1.0
-      #   with:
-      #     server: ${{ secrets.FTP_SERVER }}
-      #     username: ${{ secrets.FTP_USER }}
-      #     password: ${{ secrets.FTP_PASS }}
-      #     remotePath: /var/www/html/
-      #     localPath: ./public/*
+          # RUTA DE LA CARPETA:
+          # Si NO usaste el Paso B, usa './' (la raíz del proyecto)
+          # Si SÍ usaste el Paso B (build), usa la carpeta de salida (ej. './build' o './dist')
+          publish_dir: ./ 
+          # Fuerza el push a la rama 'gh-pages', necesaria para la configuración estándar.
+          force_orphan: true
