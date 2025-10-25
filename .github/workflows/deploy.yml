@@ -2,61 +2,53 @@
 
 name: Despliegue Automático
 
-# ------------------------------
-# 1. PERMISOS
-# Se requiere permiso de 'contents: write' para que la acción de despliegue
-# pueda crear la rama gh-pages o subir archivos a la rama principal.
-# ------------------------------
+# Otorga permisos de escritura al token para que la acción de despliegue
+# pueda crear la rama gh-pages o subir archivos.
 permissions:
   contents: write
 
-# ------------------------------
-# 2. DISPARADOR (TRIGGER)
-# Define que este flujo de trabajo se ejecuta cada vez que hay un push
-# a la rama 'main' (o la rama principal de tu proyecto).
-# ------------------------------
+# El workflow se activa con cada push a la rama 'main'
 on:
   push:
     branches:
       - main 
 
-# ------------------------------
-# 3. TRABAJOS (JOBS)
-# El trabajo que se encarga del despliegue.
-# ------------------------------
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-      # Paso A: Descarga tu código
+      # Paso 1: Descarga tu código
       - name: Checkout del repositorio
         uses: actions/checkout@v4
       
-      # ----------------------------------------------------------------
-      # Paso B (OPCIONAL): Construcción del proyecto
-      # DESCOMENTA esta sección si tu proyecto necesita ser compilado (ej. React, Vue).
-      # Si es solo HTML/CSS/JS puro, déjala COMENTADA.
-      # ----------------------------------------------------------------
-      #- name: Configurar Node.js (Si usas JS avanzado/frameworks)
-      #  uses: actions/setup-node@v4
-      #  with:
-      #    node-version: '20' # O la versión que uses
-      #- name: Instalar dependencias
-      #  run: npm install
-      #- name: Construir proyecto
-      #  run: npm run build
-        
-      # ----------------------------------------------------------------
-      # Paso C: Despliegue a GitHub Pages
-      # ----------------------------------------------------------------
+      # Paso 2: Despliegue a GitHub Pages
       - name: Desplegar a GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          
           # RUTA DE LA CARPETA:
-          # Si NO usaste el Paso B, usa './' (la raíz del proyecto)
-          # Si SÍ usaste el Paso B (build), usa la carpeta de salida (ej. './build' o './dist')
+          # Usamos './' para subir TODO el contenido del repositorio (incluyendo carpetas 1, 2, 3...)
           publish_dir: ./ 
+          
           # Fuerza el push a la rama 'gh-pages', necesaria para la configuración estándar.
           force_orphan: true
+```
+eof
+
+---
+
+## 💡 Pasos Finales para Arreglar la Pantalla en Blanco
+
+La corrección del `deploy.yml` asegura que se suban todas las carpetas. Ahora, para arreglar la **pantalla en blanco**, tienes que asegurarte de que tu **`index.html`** de la raíz tenga contenido **visible** (el código del menú).
+
+1.  **Reemplaza** el contenido de tu archivo **`.github/workflows/deploy.yml`** con el código limpio de arriba.
+2.  **Verifica el `index.html`:** Asegúrate de que el archivo **`index.html`** en la **raíz** de tu proyecto contenga el código del menú o algún texto visible, como te sugerí anteriormente.
+3.  **Guarda** ambos archivos.
+4.  **Ejecuta los comandos** en la terminal de VS Code:
+
+```bash
+git add .
+git commit -m "Fix: Limpieza del deploy.yml y verificacion de contenido de index.html"
+git push
