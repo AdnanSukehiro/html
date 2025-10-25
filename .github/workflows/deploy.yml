@@ -1,35 +1,66 @@
-name: Deploy to GitHub Pages
+# Archivo: .github/workflows/deploy.yml
 
+name: Despliegue Automático
+
+# Define qué evento activa este flujo de trabajo
 on:
   push:
-    branches: [ main ]
+    # Se activa SÓLO cuando se hace push a la rama 'main' (o 'master')
+    branches:
+      - main 
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
+# Define los trabajos (jobs) que se ejecutarán
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-and-deploy:
+    # El sistema operativo donde se ejecutará
     runs-on: ubuntu-latest
+    
+    # Pasos (steps) a ejecutar
     steps:
-      - name: Checkout
+      # Paso 1: Descarga tu código
+      - name: Checkout del repositorio
         uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      
+      # ----------------------------------------------------------------
+      # Paso 2: INSTALACIÓN Y CONSTRUCCIÓN (ADAPTA ESTO A TU PROYECTO)
+      # ----------------------------------------------------------------
+      
+      # Ejemplo para un proyecto Node.js/Web (React, Vue, etc.)
+      # - name: Configurar Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      # - name: Instalar dependencias
+      #   run: npm install
+      # - name: Construir proyecto
+      #   run: npm run build
+      
+      # Ejemplo para un proyecto Python:
+      # - name: Configurar Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: '3.10'
+      # - name: Instalar dependencias
+      #   run: pip install -r requirements.txt
+
+      # ----------------------------------------------------------------
+      # Paso 3: DESPLIEGUE (ESTO DEPENDE DE TU SERVIDOR FINAL)
+      # ----------------------------------------------------------------
+
+      # Ejemplo de despliegue a GitHub Pages (muy común para webs estáticas)
+      - name: Desplegar a GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: .
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-        with:
-          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Cambia 'public' por la carpeta que contenga tus archivos finales ('build', 'dist', etc.)
+          publish_dir: ./public
+          
+      # Opcional: Ejemplo de despliegue a un servidor externo vía SFTP/FTP
+      # - name: Deploy via SFTP
+      #   uses: wlixcc/SFTP-Action@v1.0
+      #   with:
+      #     server: ${{ secrets.FTP_SERVER }}
+      #     username: ${{ secrets.FTP_USER }}
+      #     password: ${{ secrets.FTP_PASS }}
+      #     remotePath: /var/www/html/
+      #     localPath: ./public/*
