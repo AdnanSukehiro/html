@@ -1,0 +1,24 @@
+# Nombre de tu proceso
+name: Deploy de la página
+
+# Evento que dispara la acción: cada vez que se hace un push a la rama main
+on:
+  push:
+    branches:
+      - main 
+
+# Trabajos o tareas
+jobs:
+  deploy_page:
+    # Entorno de ejecución (ubuntu se usa comúnmente)
+    runs-on: ubuntu-latest
+    steps:
+      # Descarga el código del repositorio
+      - uses: actions/checkout@v4
+      
+      # Acción crucial: Despliega la página estática
+      - name: Deploy a GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          # Directorio que contiene tu página (el '.' indica la raíz del repositorio)
+          folder: .
