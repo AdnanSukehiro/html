@@ -1,24 +1,61 @@
-# Nombre de tu proceso
-name: Deploy de la página
+name: Despliegue de Página Estática en GitHub Pages
 
-# Evento que dispara la acción: cada vez que se hace un push a la rama main
+# 1. Define cuándo se ejecuta el flujo de trabajo
 on:
   push:
-    branches:
-      - main 
+    # Se ejecuta cada vez que hay un 'push' en la rama 'main'
+    branches: [ "main" ]
+  # Permite ejecutar el flujo de trabajo manualmente desde la pestaña 'Actions'
+  workflow_dispatch:
 
-# Trabajos o tareas
+# 2. Permisos
+# Estos permisos son CRÍTICOS para que el nuevo flujo de GitHub Pages funcione.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 3. Define los trabajos
 jobs:
-  deploy_page:
-    # Entorno de ejecución (ubuntu se usa comúnmente)
+  deploy:
+    environment:
+      # Define el entorno de despliegue. Debe coincidir con la configuración de tu repo.
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
     runs-on: ubuntu-latest
+    
     steps:
-      # Descarga el código del repositorio
-      - uses: actions/checkout@v4
+      # Paso 1: Descargar el código
+      - name: Checkout del Código
+        uses: actions/checkout@v4
+
+      # **IMPORTANTE: Si tienes un proyecto que requiere compilación (React, Vue, etc.),**
+      # **descomenta y ajusta estos pasos antes del Paso 2:**
       
-      # Acción crucial: Despliega la página estática
-      - name: Deploy a GitHub Pages
-        uses: actions/deploy-pages@v4
+      # - name: Configurar Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      #     
+      # - name: Instalar dependencias y Compilar
+      #   run: |
+      #     npm install
+      #     npm run build
+          
+      # Paso 2: Configurar GitHub Pages (establece las variables de entorno)
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      # Paso 3: Subir el 'artifact' (la carpeta que se va a desplegar)
+      - name: Subir Artifact de Despliegue
+        uses: actions/upload-pages-artifact@v3
         with:
-          # Directorio que contiene tu página (el '.' indica la raíz del repositorio)
-          folder: .
+          # Usa '.' si tu archivo index.html está en la raíz de tu repositorio.
+          # Si tu sitio compilado está en una carpeta 'dist' o 'build', usa: path: './dist'
+          path: '.' 
+
+      # Paso 4: Desplegar el Artifact
+      - name: Desplegar a GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
