@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tabla Simple de Películas</title>
+</head>
+<body>
+
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="120">Portada</th>
+                <th width="150">Título</th>
+                <th width="50">Año</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td align="center">
+                    <img src="https://static0.srcdn.com/wordpress/wp-content/uploads/2020/09/Feature-Mulan-1.jpg" alt="Portada de Mulan" width="100">
+                </td>
+                <td align="left">Mulan</td>
+                <td align="center">1998</td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <img src="el_rey_leon_poster.jpg" alt="Portada de El rey león" width="100">
+                </td>
+                <td align="left">El rey león 1994</td>
+                <td align="center"></td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <img src="aladdin_poster.jpg" alt="Portada de Aladdin" width="100">
+                </td>
+                <td align="left">Aladdin</td>
+                <td align="center">1992</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
