@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscador de Smartphones</title>
+</head>
+<body>
+
+    <form action="/buscar-movil" method="get">
+        <h1> Filtra tu movil</h1>
+        
+        <section>
+            <h2>Marca (Autocompletar)</h2>
+            <label for="marca-movil">Selecciona o escribe la marca:</label>
+            <input 
+                list="lista-marcas" 
+                type="text" 
+                id="marca-movil" 
+                name="marca-movil"
+                placeholder="Ej. Samsung">
+            
+            <datalist id="lista-marcas">
+                <option value="Samsung"></option>
+                <option value="Apple"></option>
+                <option value="Xiaomi"></option>
+                <option value="Google"></option>
+                <option value="OnePlus"></option>
+                <option value="Motorola"></option>
+            </datalist>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Rango de Precio</h2>
+            <label for="rango-precio">Elige el rango máximo de precio:</label>
+            <select id="rango-precio" name="rango-precio">
+                <option value="">-- Selecciona un rango --</option>
+                <option value="0-200">Menos de 200€</option>
+                <option value="200-500">200€ - 500€ (Gama Media)</option>
+                <option value="500-800">500€ - 800€ (Gama Alta)</option>
+                <option value="800-max">Más de 800€ (Premium)</option>
+            </select>
+        </section>
+        
+        <hr>
+
+        <button type="submit">Buscar Teléfonos</button>
+
+    </form>
+
+</body>
+</html>
