@@ -1,68 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Menú Compatible</title>
-    
-    <style>
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #ccc;
-            padding: 10px;
-        }
-        /* Oculta el menú por defecto */
-        #menu-navegacion {
-            display: none; 
-            position: absolute; /* Para que flote sobre el contenido */
-            right: 0;
-            top: 50px;
-            border: 1px solid #000;
-            background: #fff;
-            padding: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Menú Exclusivo HTML</title>
 </head>
 <body>
 
-    <header>
-        <h1>Mi Sitio Web</h1>
-        
-        <button id="boton-hamburguesa">☰</button> 
-    </header>
+  <header>
+    <h1>Mi Sitio Web</h1>
+  </header>
 
-    <main>
-        <p>He usado IA en este porque el boton no se me iba a la derecha ni me iba al pulsarlo</p>
-    </main>
+  <main>
+    <p>Este menú se abre con una flecha ▼ usando solo HTML.</p>
+  </main>
 
-    <div id="menu-navegacion">
-        <nav>
-            <ul>
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-                <li><a href="#sobre-nosotros">Sobre nosotros</a></li>
-            </ul>
-        </nav>
-        <button id="cerrar-menu">Cerrar [X]</button>
-    </div>
-
-    <script>
-        const botonAbrir = document.getElementById('boton-hamburguesa');
-        const botonCerrar = document.getElementById('cerrar-menu');
-        const menu = document.getElementById('menu-navegacion');
-
-        // Función para mostrar el menú al pulsar ☰
-        botonAbrir.addEventListener('click', () => {
-            menu.style.display = 'block';
-        });
-
-        // Función para ocultar el menú al pulsar Cerrar [X]
-        botonCerrar.addEventListener('click', () => {
-            menu.style.display = 'none';
-        });
-    </script>
+  <!-- Menú desplegable -->
+  <details>
+    <summary>☰ Menú </summary>
+    <nav>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#sobre-nosotros">Sobre nosotros</a></li>
+      </ul>
+    </nav>
+  </details>
 
 </body>
 </html>
